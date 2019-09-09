@@ -7,9 +7,7 @@ import { Observable } from 'rxjs';
 import { Checklist } from './checklist.model';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ChecklistService {
 
 
@@ -24,7 +22,7 @@ export class ChecklistService {
 
   }
 
-  public buscarChecklist(id: number): Observable<Checklist> {
+  public buscarChecklist(id: string): Observable<Checklist> {
 
     return this._http.get<Checklist>(`${this.api}/checklist?id=${id}`);
 

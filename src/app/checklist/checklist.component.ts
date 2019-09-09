@@ -5,16 +5,16 @@ import { ChecklistService } from './checklist.service';
 @Component({
   selector: 'smq-checklist',
   template: `
-    <w-checklist-item 
+    <smq-checklist-item 
         *ngIf="checkList" 
         [itens]="checkList.itens">
 
-    </w-checklist-item>
+    </smq-checklist-item>
   `
 })
 export class ChecklistComponent implements OnInit {
 
-  public checkList: Checklist
+  public checkList: Checklist 
 
   constructor(
 
@@ -25,8 +25,8 @@ export class ChecklistComponent implements OnInit {
   }
 
   ngOnInit() {
-
     
+    this.checkList = new Checklist("2bcfe950-8f57-4301-a014-cdc2202f70fc", "")
     
   }
 

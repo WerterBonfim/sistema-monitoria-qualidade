@@ -1,0 +1,8 @@
+<div *ngFor="let option of options">
+    <label class="radio">
+
+        <input (click)="setValue(option.value)" type="radio" name="{{'radioGroup_' + indiceLinha }}"
+            style="position: relative;">
+        {{option.label}}
+    </label>
+</div>

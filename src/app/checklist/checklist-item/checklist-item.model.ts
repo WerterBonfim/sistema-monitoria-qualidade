@@ -1,12 +1,14 @@
 export class ChecklistItem {
     
     constructor(
-        public posicao: number,
-        descricao: string,
-        descricaoAbrevidada: string,
-        peso: number,
-        atendeuItem?: string,
-        comentario?: string
+        public id: string,
+        public posicaoOrdenacao: number,
+        public descricao: string,
+        public descricaoAbreviada: string,
+        public peso: number,
+        public eEliminatoria: boolean,
+        public atendeuItem?: string,
+        public comentario?: string
     ) {
 
     }
