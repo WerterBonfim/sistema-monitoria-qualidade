@@ -5,6 +5,7 @@ import { ChecklistService } from './checklist.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from 'src/mock/in-memory-data.service';
 import { FakeDb } from 'src/mock/fake-db';
+import { Checklist } from './checklist.model';
 
 
 describe('ChecklistService', () => {
@@ -73,7 +74,7 @@ describe('ChecklistService', () => {
     checklistService.buscarChecklist(id)
       .subscribe(checklist => {
 
-        expect(checklist).toBeTruthy('check list não foi encontrado');                
+        expect(checklist).toBeTruthy('check list não foi encontrado');
         expect(checklist.nome).toBe("Padrão Default", 'Não retonou o primeiro registro');
 
       });
@@ -82,6 +83,31 @@ describe('ChecklistService', () => {
     expect(req.request.method).toEqual('GET');
     const check = FakeDb.find(x => x.id === id);
     req.flush(check);
+
+  });
+
+  it('deve atualizar um checklist por id', () => {
+
+    const atualizacao: Partial<Checklist> = { nome: "Checklist atualizado 2019" };
+    const id = "8dc5bd01-8b46-490a-b5de-7263fc0e2e1e";
+
+
+    checklistService.atualizar(id, atualizacao)
+      .subscribe(checklist => {
+
+        expect(checklist).toBeTruthy('check list não foi encontrado');
+        expect(checklist.nome).toBe("Checklist atualizado 2019", 'Não retonou o primeiro registro');
+
+      });
+
+    const req = httpTestingController.expectOne(`api/checklist/${id}`);
+    expect(req.request.method).toEqual('PUT');
+    const check = FakeDb.find(x => x.id === id);
+
+    req.flush({
+      ...check,
+      ...atualizacao
+    });
 
   });
 

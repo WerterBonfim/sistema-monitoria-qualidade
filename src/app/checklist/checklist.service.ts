@@ -22,7 +22,7 @@ export class ChecklistService {
 
   }
 
-  public buscarChecklist(id: string): Observable<Checklist> {
+  public buscarChecklist(id: string): Observable<Checklist> {    
 
     return this._http.get<Checklist>(`${this.api}/checklist?id=${id}`);
 
@@ -30,6 +30,12 @@ export class ChecklistService {
 
   public listarChecklists(): Observable<Checklist[]> {
     return this._http.get<Checklist[]>(`${this.api}/checklist`);
+  }
+
+  public atualizar(id: string, checklist: Partial<Checklist>): Observable<Checklist> {
+
+    return this._http.put<Checklist>(`${this.api}/checklist/${id}`, checklist);
+
   }
 
 
