@@ -3,49 +3,56 @@ import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { ChecklistComponent } from './checklist.component';
 import { ChecklistItemComponent } from './checklist-item/checklist-item.component';
 import { ChecklistService } from './checklist.service';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 
 describe('ChecklistComponent', () => {
-  
+
   let
     component: ChecklistComponent,
-    fixture: ComponentFixture<ChecklistComponent>,
-    checklistServiceFake: ChecklistService;
+    fixture: ComponentFixture<ChecklistComponent>    
 
 
-  beforeEach( async (() => {
+  beforeEach(async(() => {
 
-    checklistServiceFake = jasmine.createSpyObj('ChecklistService', ['buscarChecklist', 'listarChecklists']);
+    const activatedRouteSpy = jasmine.createSpyObj('ActivatedRoute', ['pipe']);
+    
+    
+    
 
     TestBed.configureTestingModule({
 
+      imports: [
+        RouterTestingModule
+      ],
+
       declarations: [
-        ChecklistComponent,
-        ChecklistItemComponent
+        ChecklistComponent
       ],
 
       providers: [
-        { provide: ChecklistService, useValue: checklistServiceFake }
-
+        { provide: ActivatedRoute, useValue: activatedRouteSpy }
       ]
 
     })
-      .compileComponents();
+      .compileComponents()
+      .then(() => {
+
+        fixture = TestBed.createComponent(ChecklistComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+
+      });
 
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ChecklistComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  
 
   it('deve ser criado', () => {
-    
-    expect(component).toBeTruthy();
-    expect(true).toBeTruthy();
 
-  });  
+    expect(component).toBeTruthy();    
+
+  });
 
 
 });

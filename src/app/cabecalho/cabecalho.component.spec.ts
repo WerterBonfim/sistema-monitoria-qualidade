@@ -1,11 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 import { CabecalhoComponent } from './cabecalho.component';
-import { DebugElement } from '@angular/core';
-import { By } from 'protractor';
+import { By } from '@angular/platform-browser';
 
 describe('CabecalhoComponent', () => {
-  
+
   let component: CabecalhoComponent;
   let fixture: ComponentFixture<CabecalhoComponent>;
   let el: DebugElement;
@@ -13,40 +14,57 @@ describe('CabecalhoComponent', () => {
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
-      declarations: [ 
-        CabecalhoComponent 
+      declarations: [
+        CabecalhoComponent,
+
+      ],
+
+      imports: [
+        NoopAnimationsModule
+
       ]
     })
-    .compileComponents();
+      .compileComponents()
+      .then(() => {
+
+        fixture = TestBed.createComponent(CabecalhoComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+        el = fixture.debugElement;
+
+      })
 
   }));
 
-  beforeEach(() => {
 
-    fixture = TestBed.createComponent(CabecalhoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
 
-    el = fixture.debugElement;
+  it('Deve criar o component', () => {
 
-  });
-
-  it('should create', () => {
-    
-    //el.nativeElement.outerHtml
-    //pending();
     expect(component).toBeTruthy();
-    
+
   });
 
-  it('Deve conter uma lista de navbars', () => {   
-    
-    //el.nativeElement.outerHtml
-    pending();
-    
-    //expect(component).toBeTruthy();
-    
-  });
+  it("Deve ter a navbar que presenta os menus", () => {
+
+    const navbar = el.query(By.css(".navbar"));
+    expect(navbar).toBeTruthy('Não foi encontrado o elemento');
+
+  })
+
+
+  it("Deve conter a aba agenda e seus sub-menus", () => {
+
+    const navbarAgenda = el.query(By.css(".navbar-item:nth-child(1)"));
+
+    const linkAgendas = navbarAgenda.query(By.css(".navbar-link"));
+
+    expect(linkAgendas.nativeElement.textContent).toContain("Agendas");
+
+    const subLinksDaAgenda = navbarAgenda.queryAll(By.css(".navbar-item"));
+
+    expect(subLinksDaAgenda.length).toBe(2);
+
+  })
 
 
 });

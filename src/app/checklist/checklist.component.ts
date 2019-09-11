@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { Checklist } from './checklist.model';
-import { ChecklistService } from './checklist.service';
+import { pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'smq-checklist',
@@ -8,20 +11,33 @@ import { ChecklistService } from './checklist.service';
 })
 export class ChecklistComponent implements OnInit {
 
-  public checkList: Checklist 
+  public checkLists: Checklist[] = [];
 
-  constructor(
-
-    private _checklistService: ChecklistService    
+  constructor(    
+    private _activatedRouter: ActivatedRoute
 
   ) {
 
   }
 
   ngOnInit() {
-    
-    this.checkList = new Checklist("2bcfe950-8f57-4301-a014-cdc2202f70fc", "")
-    
+
+    this.carregarRecursosDaPagina();
+
+
+  }
+
+  private carregarRecursosDaPagina(): void {
+
+    this._activatedRouter.data      
+      .pipe(map(x => x.recursosDaPagina))
+      .subscribe(recursos => {
+        
+        console.log('recursos', recursos);
+        this.checkLists = recursos.checklists;
+
+      })
+
   }
 
 }

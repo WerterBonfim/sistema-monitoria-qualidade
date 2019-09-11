@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from 'src/mock/in-memory-data.service';
+import { InputComponent } from './shared/input/input.component';
 
 export const isMock = environment.mock
 
@@ -19,7 +20,8 @@ export const isMock = environment.mock
   declarations: [
     AppComponent,
     CabecalhoComponent,
-    RodapeComponent    
+    RodapeComponent,
+    InputComponent    
     
   ],
   imports: [

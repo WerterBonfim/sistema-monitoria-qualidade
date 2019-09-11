@@ -40,3 +40,5 @@ export const FakeDb: Checklist[] = [
         ]
     }
 ];
+
+// TODO: Criar objeto que representa os dados o usuario logado.
