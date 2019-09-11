@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 
 import { ChecklistService } from './checklist.service';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from 'src/mock/in-memory-data.service';
 import { FakeDb } from 'src/mock/fake-db';
 import { Checklist } from './checklist.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChecklistItem } from './checklist-item/checklist-item.model';
 
 
 describe('ChecklistService', () => {
@@ -26,7 +26,6 @@ describe('ChecklistService', () => {
 
       imports: [
         HttpClientTestingModule
-        //,HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService)
       ],
 
       providers: [
@@ -39,6 +38,13 @@ describe('ChecklistService', () => {
     httpTestingController = TestBed.get(HttpTestingController);
 
   });
+
+
+  afterEach(() => {
+
+    httpTestingController.verify();
+
+  })
 
   it('Deve ser criado', () => {
 
@@ -65,7 +71,6 @@ describe('ChecklistService', () => {
     req.flush(FakeDb);
 
   });
-
 
   it('deve retornar um checklist por id', () => {
 
@@ -111,11 +116,58 @@ describe('ChecklistService', () => {
 
   });
 
-  afterEach(() => {
+  it('Deve dar um erro caso ocorrer uma falha ao salvar um checklist', () => {
 
-    httpTestingController.verify();
+    const atualizacao: Partial<Checklist> = { nome: "Checklist atualizado 2019" };
+    const id = "8dc5bd01-8b46-490a-b5de-7263fc0e2e1e";
 
-  })
+    checklistService.atualizar(id, atualizacao)
+      .subscribe(
+        () => fail("A operação de atualizar um checklist deveria ter falhado"),
+
+        (error: HttpErrorResponse) => {
+
+          expect(error.status).toBe(500 /**	Server Errors */);
+          // asserts para retonar um estrutura especifica
+
+        }
+      );
+
+    const req = httpTestingController.expectOne(`api/checklist/${id}`);
+    expect(req.request.method).toEqual("PUT");
+
+    const mensgemDeErro = 'Ocorreu um erro interno no servidor ao tentar atualizar o checklist, tente novamente em breve';
+    const response = { sucesso: false, mensagem: mensgemDeErro };
+    req.flush(response, { status: 500, statusText: 'Internal Server Error' });
+
+  });
+
+  it('Deve atualizar uma pergunta de um checklist', () => {
+
+    const
+      checklist = FakeDb[0],
+      segundaPergunta = checklist.itens[2];
+
+    const atualizacao: Partial<ChecklistItem> = { descricaoAbreviada: "atualizado pelo werter" };
+
+    checklistService.atualizarPergunta(segundaPergunta.id, atualizacao)
+      .subscribe(checklistItem => {
+
+        expect(checklistItem).toBeTruthy('pergunta do checklist não foi atualizado');
+        expect(checklistItem.descricaoAbreviada).toBe("atualizado pelo werter", 'Não retonou o primeiro registro');
+
+      });
+
+    const req = httpTestingController.expectOne(`api/checklist-item/${segundaPergunta.id}`);
+    expect(req.request.method).toEqual('PUT');
+
+    req.flush({
+      ...segundaPergunta,
+      ...atualizacao
+    });
+
+
+  });
 
 
 });

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 import { Checklist } from './checklist.model';
 import { environment } from 'src/environments/environment';
+import { ChecklistItem } from './checklist-item/checklist-item.model';
 
 @Injectable()
 export class ChecklistService {
@@ -35,6 +36,12 @@ export class ChecklistService {
   public atualizar(id: string, checklist: Partial<Checklist>): Observable<Checklist> {
 
     return this._http.put<Checklist>(`${this.api}/checklist/${id}`, checklist);
+
+  }
+
+  public atualizarPergunta(id: string, checklistItem: Partial<ChecklistItem>): Observable<ChecklistItem> {
+
+    return this._http.put<ChecklistItem>(`${this.api}/checklist-item/${id}`, checklistItem);
 
   }
 

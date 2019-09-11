@@ -4,13 +4,7 @@ import { ChecklistService } from './checklist.service';
 
 @Component({
   selector: 'smq-checklist',
-  template: `
-    <smq-checklist-item 
-        *ngIf="checkList" 
-        [itens]="checkList.itens">
-
-    </smq-checklist-item>
-  `
+  templateUrl: './checklist.component.html'
 })
 export class ChecklistComponent implements OnInit {
 
