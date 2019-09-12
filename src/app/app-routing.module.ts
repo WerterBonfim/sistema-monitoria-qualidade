@@ -3,10 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ChecklistResolver } from './checklist/checklist.resolver';
 import { ChecklistComponent } from './checklist/checklist.component';
+import { CriarChecklistComponent } from './checklist/criar-checklist/criar-checklist.component';
 
 
 const routes: Routes = [
-  { path: 'checklist', component: ChecklistComponent, resolve: { recursosDaPagina: ChecklistResolver } }
+  
+  { path: 'checklist', loadChildren: () => import('./checklist/checklist.module').then(m => m.ChecklistModule) },
+
 ];
 
 @NgModule({

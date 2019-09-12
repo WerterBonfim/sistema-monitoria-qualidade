@@ -29,7 +29,7 @@ export class ChecklistResolver implements Resolve<any> {
         return forkJoin(listaDeRecurso).pipe(
             map( recurso => {
                 return {
-                    segurados: recurso[0]
+                    checklists: recurso[0]
                 }
             }));
 

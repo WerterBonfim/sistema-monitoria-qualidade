@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { RadioComponent } from './radio/radio.component';
-import { InputComponent } from './input/input.component';
+import { InputComponent } from "./input/InputComponent";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -19,6 +19,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     
+  ],
+  exports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RadioComponent,
+    InputComponent
+
   ]
 
 })

@@ -30,7 +30,10 @@ export class ChecklistService {
   }
 
   public listarChecklists(): Observable<Checklist[]> {
+
     return this._http.get<Checklist[]>(`${this.api}/checklist`);
+      
+
   }
 
   public atualizar(id: string, checklist: Partial<Checklist>): Observable<Checklist> {

@@ -1,4 +1,4 @@
-import { FakeDb } from './fake-db';
+import { FakeDb as checklist } from './fake-db';
 import { InMemoryDbService } from "angular-in-memory-web-api";
 
 
@@ -15,13 +15,7 @@ export class InMemoryDataService implements InMemoryDbService {
 
     createDb(reqInfo?: import("angular-in-memory-web-api").RequestInfo): {} | import("rxjs").Observable<{}> | Promise<{}> {
 
-        const db = [
-            {
-                "checklist": FakeDb
-            }
-        ];
-
-        return db;
+        return {checklist};
 
     }
 

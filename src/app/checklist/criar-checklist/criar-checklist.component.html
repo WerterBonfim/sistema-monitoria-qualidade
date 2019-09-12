@@ -1,1 +1,34 @@
-<p>criar-checklist works!</p>
+<pre>
+    {{ formulario.value | json }}
+</pre>
+
+<div [formGroup]="formulario">
+
+
+
+    <nav class="level" *ngIf="nomeChecklistValido">
+        <!-- Right side -->
+        <div class="level-left">
+
+            <div class="level-item">
+                <p class="subtitle is-6">
+                    <strong>Nome do Checklist: </strong>
+                    <span class="is-pointer-cursor" (click)="definirNovoNomeDoChecklist()"> {{ nomeDoChecklist }}
+                    </span>
+                </p>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <div [hidden]="!editarNomeDoChecklist">
+
+        <smq-input formControlName="checklist">
+
+        </smq-input>
+
+
+    </div>
+
+</div>

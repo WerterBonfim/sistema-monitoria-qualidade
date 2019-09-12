@@ -28,10 +28,12 @@ export const isMock = environment.mock
     
     BrowserModule
     ,HttpClientModule        
-    ,isMock ? HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService) : []
+    //,isMock ? HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService) : []
+    ,HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: false })
     ,AppRoutingModule
     ,ChecklistModule
     ,ComponentesCompartilhadosModule
+    
 
   ],
   providers: [],

@@ -1,7 +1,19 @@
-<div class="field">
+<!-- <div class="field">
     <div class="control has-icons-left">
 
         <ng-content></ng-content>
+
+        <input class="input" 
+            [(ngModel)]="nomeDoChecklist" type="text"
+            [class.is-danger]="iptNomeChecklist.model.invalid" 
+            [class.is-success]="iptNomeChecklist.model.valid"
+            placeholder="Nome do checklist" 
+            (focusout)="definirNomeChecklist(iptNomeChecklist.model)"
+            (keyup.enter)="definirNomeChecklist(iptNomeChecklist.model)" 
+            #nomeChecklist 
+            minlength="3" 
+            maxlength="20"
+            required>
 
         <span *ngIf="temErro()" class="icon is-small is-right">
             <i class="fa fa-warning"></i>
@@ -12,4 +24,32 @@
     </div>
     <p *ngIf="eValido()" class="help is-success">Ok</p>
     <p *ngIf="temErro()" class="help is-danger"> {{ mensagemDeErro }} </p>
+</div> -->
+
+
+<div class="field">
+    <label class="label" *ngIf="temLabel" >{{ options.label }}</label>
+    
+    <div [class.has-icons-right]="input.valid" >
+        <input 
+            class="input" 
+            type="text" 
+
+            [class.is-success]="input.valid"  
+            [class.is-danger]="input.invalid"
+            placeholder="{{ options.placeholder }}"
+            minlength="options.minlength" 
+            maxlength="options.maxlength">
+        
+        <!-- <span class="icon is-small is-left">
+            <i class="fas fa-user"></i>
+        </span>
+        <span class="icon is-small is-right">
+            <i class="fas fa-check"></i>
+        </span> -->
+
+    </div>
+
+    <p *ngIf="eValido()" class="help is-success">{{ options.mensagemDeSucesso }}</p>
+    <p *ngIf="temErro()" class="help is-danger"> {{ options.mensagemDeErro }} </p>
 </div>
