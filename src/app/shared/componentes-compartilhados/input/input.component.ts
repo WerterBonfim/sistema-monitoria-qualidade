@@ -1,29 +1,33 @@
-import { Component, OnInit, Input, ContentChild, forwardRef, OnChanges, SimpleChanges } from '@angular/core';
-import { NgModel, FormControlName, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import { Component, OnInit, Input, ContentChild, forwardRef, OnChanges, SimpleChanges, ViewEncapsulation, AfterContentInit } from '@angular/core';
+import { NgModel, FormControlName, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl } from '@angular/forms';
 import { InputOptions } from './input-options';
 
 @Component({
   selector: 'smq-input',
   templateUrl: './input.component.html',
+  //encapsulation: ViewEncapsulation.ShadowDom,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => InputComponent), multi: true },
-    { provide: NG_VALIDATORS, useExisting: forwardRef(() => InputComponent), multi: true }
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputComponent),
+      multi: true
+    },
+    //{ provide: NG_VALIDATORS, useExisting: forwardRef(() => InputComponent), multi: true }
   ]
 })
-export class InputComponent implements OnInit, ControlValueAccessor, OnChanges {
+export class InputComponent implements OnInit, ControlValueAccessor {
+
+
 
 
 
   @Input()
   public options: InputOptions = new InputOptions();
 
-  private input: any;
+  public input: FormControlName | NgModel;
+  
 
-  @ContentChild(NgModel, { static: true })
-  public model: NgModel;
 
-  @ContentChild(FormControlName, { static: true })
-  public control: FormControlName;
 
 
   get value(): any {
@@ -33,9 +37,9 @@ export class InputComponent implements OnInit, ControlValueAccessor, OnChanges {
 
   set value(va: any) {
     console.log('v', va);
-    if (va)
-      //this.input.control.setValue(v);
-      this.onChange(va);
+    if (this.input)
+      this.input.control.setValue(va);
+
   }
 
   propagateChange: any = () => { };
@@ -50,19 +54,8 @@ export class InputComponent implements OnInit, ControlValueAccessor, OnChanges {
   ngOnInit() {
   }
 
-  // ngAfterContentInit(): void {
-  //   this.input = this.model || this.control;
-
-  //   console.log('input', this.input)
-
-
-
-  //   if (this.input === undefined) {
-  //     throw new Error('Esse componente precisa ser usando com uma diretiva ngModel ou formControlName');
-  //   }
-  // }
-
   public eValido(): boolean {
+    console.log('input valor', this.input);
     const eValido = this.input.valid && (this.input.dirty || this.input.touched);
     return eValido;
   }
@@ -80,21 +73,13 @@ export class InputComponent implements OnInit, ControlValueAccessor, OnChanges {
 
 
   writeValue(obj: any): void {
-
-    console.log('input', this.input)
-
-    if (obj) {
-      this.value = obj;
-      this.onChange(this.value)
-
-    }
-
-
+    this.value = obj;
   }
-  registerOnChange(fn: any): void {
 
-    console.log('registerOnChange', fn);
+  registerOnChange(fn: any): void {
     this.onChange = fn;
+    //this.onChange.valueChange.subscribe(x => console.log('alsdjflakj', x))
+    console.dir(this.onChange)
   }
   registerOnTouched(fn: any): void {
     this.OnTouched = fn;
@@ -106,11 +91,6 @@ export class InputComponent implements OnInit, ControlValueAccessor, OnChanges {
   //#endregion
 
 
-  ngOnChanges(changes: SimpleChanges): void {
-    
-    //this.propagateChange(this.counterValue);
-
-  }
 
 
 }

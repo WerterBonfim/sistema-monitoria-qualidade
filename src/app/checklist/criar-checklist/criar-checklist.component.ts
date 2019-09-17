@@ -36,6 +36,13 @@ export class CriarChecklistComponent implements OnInit {
   public definirNovoNomeDoChecklist(): void {
 
   }
+
+
+  public logar(): void {
+
+    console.log('formulario', this.formulario.value);
+
+  }
   
 
 }

@@ -39,16 +39,10 @@
             [class.is-danger]="input.invalid"
             placeholder="{{ options.placeholder }}"
             minlength="options.minlength" 
-            maxlength="options.maxlength">
-        
-        <!-- <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-        </span>
-        <span class="icon is-small is-right">
-            <i class="fas fa-check"></i>
-        </span> -->
-
-    </div>
+            maxlength="options.maxlength"            
+            [value]="value"
+            >
+        </div>
 
     <p *ngIf="eValido()" class="help is-success">{{ options.mensagemDeSucesso }}</p>
     <p *ngIf="temErro()" class="help is-danger"> {{ options.mensagemDeErro }} </p>

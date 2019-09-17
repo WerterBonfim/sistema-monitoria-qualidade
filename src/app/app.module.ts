@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from 'src/mock/in-memory-data.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 export const isMock = environment.mock
@@ -27,6 +28,8 @@ export const isMock = environment.mock
   imports: [
     
     BrowserModule
+    ,FormsModule
+    ,ReactiveFormsModule
     ,HttpClientModule        
     //,isMock ? HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService) : []
     ,HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: false })
