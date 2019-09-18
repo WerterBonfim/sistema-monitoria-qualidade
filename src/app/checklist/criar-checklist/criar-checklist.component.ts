@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UtilForms } from 'src/app/shared/util-forms';
+import { InputOptions } from 'src/app/shared/componentes-compartilhados/input/input-options';
 
 @Component({
   selector: 'smq-criar-checklist',
@@ -12,6 +13,9 @@ export class CriarChecklistComponent implements OnInit {
   public nomeChecklistValido: boolean;
   public nomeDoChecklist: string;
   public formulario: FormGroup;
+  public submited: boolean;
+
+  public opcoes = new InputOptions();
 
   constructor(
     private _builder: FormBuilder,
@@ -21,13 +25,14 @@ export class CriarChecklistComponent implements OnInit {
   ngOnInit() {    
 
     this.criarFormulario();
+    this.configurarInputs();
 
   }
 
   private criarFormulario(): void {
 
     this.formulario = this._builder.group({
-      'checklist': this._forms.criarControle()      
+      'checklist': this._forms.criarControle([Validators.required])      
     });
 
   }
@@ -37,10 +42,19 @@ export class CriarChecklistComponent implements OnInit {
 
   }
 
+  private configurarInputs(): void {
+
+    this.opcoes.required = true;
+    this.opcoes.minlength = 3;
+
+  }
+
 
   public logar(): void {
 
     console.log('formulario', this.formulario.value);
+
+    this.submited = true;
 
   }
   

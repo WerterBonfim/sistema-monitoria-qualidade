@@ -1,49 +1,27 @@
-<!-- <div class="field">
-    <div class="control has-icons-left">
-
-        <ng-content></ng-content>
-
-        <input class="input" 
-            [(ngModel)]="nomeDoChecklist" type="text"
-            [class.is-danger]="iptNomeChecklist.model.invalid" 
-            [class.is-success]="iptNomeChecklist.model.valid"
-            placeholder="Nome do checklist" 
-            (focusout)="definirNomeChecklist(iptNomeChecklist.model)"
-            (keyup.enter)="definirNomeChecklist(iptNomeChecklist.model)" 
-            #nomeChecklist 
-            minlength="3" 
-            maxlength="20"
-            required>
-
-        <span *ngIf="temErro()" class="icon is-small is-right">
-            <i class="fa fa-warning"></i>
-        </span>
-        <span *ngIf="eValido()" class="icon is-small is-right">
-            <i class="fa fa-check"></i>
-        </span>
-    </div>
-    <p *ngIf="eValido()" class="help is-success">Ok</p>
-    <p *ngIf="temErro()" class="help is-danger"> {{ mensagemDeErro }} </p>
-</div> -->
-
+<pre>
+    {{ input.valid | json }}
+</pre>
 
 <div class="field">
-    <label class="label" *ngIf="temLabel" >{{ options.label }}</label>
+    <label class="label" *ngIf="temLabel" >{{ opcoes.label }}</label>
     
     <div [class.has-icons-right]="input.valid" >
-        <input 
+        <input             
             class="input" 
             type="text" 
-
-            [class.is-success]="input.valid"  
-            [class.is-danger]="input.invalid"
-            placeholder="{{ options.placeholder }}"
-            minlength="options.minlength" 
-            maxlength="options.maxlength"            
-            [value]="value"
+            #input="ngModel"
+            (input)="onChange($event.target.value)"
+            [class.is-success]="eValido()"  
+            [class.is-danger]="eInvalido()"
+            placeholder="{{ opcoes.placeholder }}"
+            minlength="opcoes.minlength" 
+            maxlength="opcoes.maxlength"            
+            [value]="valor"
+            (change)="onChange"
+            ngModel
             >
         </div>
 
-    <p *ngIf="eValido()" class="help is-success">{{ options.mensagemDeSucesso }}</p>
-    <p *ngIf="temErro()" class="help is-danger"> {{ options.mensagemDeErro }} </p>
+    <p *ngIf="eValido()" class="help is-success">{{ opcoes.mensagemDeSucesso }}</p>
+    <p *ngIf="eInvalido()" class="help is-danger"> {{ opcoes.mensagemDeErro }} </p>
 </div>

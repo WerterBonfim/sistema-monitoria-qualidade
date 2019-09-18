@@ -1,96 +1,127 @@
-import { Component, OnInit, Input, ContentChild, forwardRef, OnChanges, SimpleChanges, ViewEncapsulation, AfterContentInit } from '@angular/core';
-import { NgModel, FormControlName, ControlContainer, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl } from '@angular/forms';
+import { Component, Input, forwardRef, ViewChild, ElementRef, ContentChild } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControlName, FormControl, Validator, ValidatorFn, Validators, NgModel, NG_VALIDATORS } from '@angular/forms';
 import { InputOptions } from './input-options';
 
 @Component({
   selector: 'smq-input',
   templateUrl: './input.component.html',
-  //encapsulation: ViewEncapsulation.ShadowDom,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
       multi: true
     },
-    //{ provide: NG_VALIDATORS, useExisting: forwardRef(() => InputComponent), multi: true }
+    {
+      provide: NG_VALIDATORS,
+      useExisting: InputComponent,
+      multi: true
+    }
   ]
 })
-export class InputComponent implements OnInit, ControlValueAccessor {
-
-
-
-
+export class InputComponent implements ControlValueAccessor, Validator {
 
   @Input()
-  public options: InputOptions = new InputOptions();
+  public opcoes: InputOptions = new InputOptions();
 
-  public input: FormControlName | NgModel;
-  
+  @Input()
+  public submited: boolean;
 
+  @ViewChild('input', { static: true })
+  public input: NgModel
+  public disabled: any;
 
-
-
-  get value(): any {
-    return this.input.control.value;
-  }
-
-
-  set value(va: any) {
-    console.log('v', va);
-    if (this.input)
-      this.input.control.setValue(va);
-
-  }
-
-  propagateChange: any = () => { };
-  validateFn: any = () => { };
-
-
-
-
+  private propagateChange = (_: any) => { };
 
   constructor() { }
 
-  ngOnInit() {
-  }
 
   public eValido(): boolean {
-    console.log('input valor', this.input);
-    const eValido = this.input.valid && (this.input.dirty || this.input.touched);
-    return eValido;
+
+    //console.log('NgModel: ', this.input)
+    //this.verificarErros();
+
+
+    if (!!this.input && this.submited) {
+      const eValido = this.input.valid && (this.input.dirty || this.input.touched);
+      return eValido;
+    }
+
+    return undefined;
+
+
   }
 
-  public temErro(): boolean {
-    const eValido = this.input.invalid && (this.input.dirty || this.input.touched);
-    return eValido;
+  public eInvalido(): boolean {
+
+    if (!!this.input && this.submited) {
+      const eValido = this.input.invalid && (this.input.dirty || this.input.touched);
+      return eValido;
+    }
+
+    return undefined;
+
+
   }
 
 
-  //#region [ implementação da interface ControlValueAccessor ]
-
-  onChange: any = () => { };
-  OnTouched: any = () => { };
+  //#region [ implementação da interface ControlValueAccessor ] 
 
 
   writeValue(obj: any): void {
-    this.value = obj;
+    console.log('obj', obj);
+    console.log('iput', this.input);;
+    this.input.control.setValue(obj)
+    //this.input.nativeElement.value = obj;
   }
 
   registerOnChange(fn: any): void {
-    this.onChange = fn;
-    //this.onChange.valueChange.subscribe(x => console.log('alsdjflakj', x))
-    console.dir(this.onChange)
+    this.propagateChange = fn;
   }
-  registerOnTouched(fn: any): void {
-    this.OnTouched = fn;
-  }
+
+  registerOnTouched(fn: any): void { }
+
   setDisabledState?(isDisabled: boolean): void {
     console.log('isDisabled', isDisabled);
+    this.disabled = isDisabled;
   }
 
   //#endregion
 
 
+  public onChange(novoValor: any): void {
+    this.propagateChange(novoValor);
+  }
+
+  //#region [ implementação da interface Validator ]
+
+  validate(control: import("@angular/forms").AbstractControl): import("@angular/forms").ValidationErrors {
+
+    //console.log('validate', control);
+    
+    console.log('NgModel Controle', {
+      erros: control.errors,
+      requirido: control.hasError('required')
+    });
+
+    return this.opcoes.listarValidacoes(control);
+
+  }
+
+  registerOnValidatorChange?(fn: () => void): void {
+
+    console.log('registerOnValidatorChange', fn);
+
+  }
+
+  //#endregion
+
+
+
+  private verificarErros(): void {
+
+    
+
+  }
 
 
 }
