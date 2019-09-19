@@ -1,6 +1,3 @@
-import { Util } from './../../utils';
-import { ValidatorFn, Validators, ValidationErrors, AbstractControl } from '@angular/forms';
-
 export class InputOptions {
 
     constructor(
@@ -15,29 +12,5 @@ export class InputOptions {
     ) {
 
     }
-
-
-
-    public listarValidacoes(controle: AbstractControl): ValidationErrors {
-
-        const validacoes: ValidatorFn[] = [];        
-
-        if (this.required) {
-            validacoes.push(Validators.required);
-        }
-
-        if (this.pattern) {
-            validacoes.push(Validators.pattern(this.pattern))
-        }
-
-        if (this.maxlength) {
-            validacoes.push(Validators.maxLength(this.maxlength))
-        }
-
-        // TODO: Aplicar demais validações
-
-        return Validators.compose(validacoes);
-
-    }
-
+    
 }

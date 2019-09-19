@@ -53,6 +53,7 @@ export class CriarChecklistComponent implements OnInit {
   public logar(): void {
 
     console.log('formulario', this.formulario.value);
+    console.log('formualri valido', this.formulario.get('checklist').errors)
 
     this.submited = true;
 

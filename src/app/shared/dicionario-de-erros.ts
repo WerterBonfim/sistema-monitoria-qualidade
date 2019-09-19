@@ -1,12 +1,12 @@
 import { Validators } from '@angular/forms';
 
-Validators.minLength
 
 export const DicionarioDeErros = {
 
-    required: 'Campo obrigatório'
-    ,minLenght: (qtdMinima: number) => `Digite no minimo ${qtdMinima}`
-    ,maxLength: (qtdMaxima: number) => `Quantidade maxima: ${qtdMaxima}`
-    
+    required: () => 'Campo obrigatório'
+    , minLenght: (erro: any) => `Digite no minimo ${1}`
+    , maxLength: (erro: any) => `Quantidade maxima: ${1}`
+
 
 }
+

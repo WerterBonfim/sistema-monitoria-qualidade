@@ -1,4 +1,5 @@
-import { Component, Input, forwardRef, ViewChild, ElementRef, ContentChild } from '@angular/core';
+import { DicionarioDeErros } from './../../dicionario-de-erros';
+import { Component, Input, forwardRef, ViewChild, ElementRef, ContentChild, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControlName, FormControl, Validator, ValidatorFn, Validators, NgModel, NG_VALIDATORS } from '@angular/forms';
 import { InputOptions } from './input-options';
 
@@ -11,14 +12,16 @@ import { InputOptions } from './input-options';
       useExisting: forwardRef(() => InputComponent),
       multi: true
     },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: InputComponent,
-      multi: true
-    }
+    // {
+    //   provide: NG_VALIDATORS,
+    //   useExisting: InputComponent,
+    //   multi: true
+
+    // }
   ]
 })
-export class InputComponent implements ControlValueAccessor, Validator {
+export class InputComponent implements ControlValueAccessor, OnInit {
+  
 
   @Input()
   public opcoes: InputOptions = new InputOptions();
@@ -31,8 +34,16 @@ export class InputComponent implements ControlValueAccessor, Validator {
   public disabled: any;
 
   private propagateChange = (_: any) => { };
+  private temErroNoControle: boolean;
 
   constructor() { }
+
+
+  ngOnInit(): void {
+
+    console.log('on init', this.input);
+    
+  }
 
 
   public eValido(): boolean {
@@ -42,7 +53,7 @@ export class InputComponent implements ControlValueAccessor, Validator {
 
 
     if (!!this.input && this.submited) {
-      const eValido = this.input.valid && (this.input.dirty || this.input.touched);
+      const eValido = (this.input.dirty || this.input.touched);
       return eValido;
     }
 
@@ -54,8 +65,8 @@ export class InputComponent implements ControlValueAccessor, Validator {
   public eInvalido(): boolean {
 
     if (!!this.input && this.submited) {
-      const eValido = this.input.invalid && (this.input.dirty || this.input.touched);
-      return eValido;
+      const invalido = (this.input.dirty || this.input.touched);
+      return invalido;
     }
 
     return undefined;
@@ -68,10 +79,7 @@ export class InputComponent implements ControlValueAccessor, Validator {
 
 
   writeValue(obj: any): void {
-    console.log('obj', obj);
-    console.log('iput', this.input);;
-    this.input.control.setValue(obj)
-    //this.input.nativeElement.value = obj;
+    this.input.control.setValue(obj);
   }
 
   registerOnChange(fn: any): void {
@@ -96,14 +104,26 @@ export class InputComponent implements ControlValueAccessor, Validator {
 
   validate(control: import("@angular/forms").AbstractControl): import("@angular/forms").ValidationErrors {
 
-    //console.log('validate', control);
-    
-    console.log('NgModel Controle', {
-      erros: control.errors,
-      requirido: control.hasError('required')
-    });
+    console.log('controel', control.errors)
 
-    return this.opcoes.listarValidacoes(control);
+    if (!!!control.errors) {
+      console.log('não tem erro')
+      this.temErroNoControle = false;
+      return null;
+    }
+
+
+
+
+    this.temErroNoControle = true;
+
+    const primeirErro = Object.keys(control.errors)[0];
+
+    const descricao = DicionarioDeErros[primeirErro];
+    this.opcoes.mensagemDeErro = descricao;
+
+    console.log('tem erros', control.getError(primeirErro))
+    return control.getError(primeirErro);
 
   }
 
@@ -119,7 +139,7 @@ export class InputComponent implements ControlValueAccessor, Validator {
 
   private verificarErros(): void {
 
-    
+
 
   }
 

@@ -20,7 +20,8 @@ export class UtilForms {
 
     static criarControle(formBuilder: FormBuilder, valorInicial: string, validacoes: (ValidatorFn | null | undefined)[] = []): AbstractControl {
 
-        return formBuilder.control(valorInicial, Validators.compose(validacoes))
+        //return formBuilder.control(valorInicial, { updateOn: 'change', validators: Validators.compose(validacoes) } )
+        return formBuilder.control(valorInicial, Validators.compose(validacoes)  );
 
     }
 
